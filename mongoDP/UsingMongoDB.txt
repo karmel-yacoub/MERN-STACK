@@ -1,0 +1,91 @@
+1)Create a database called 'my_first_db'.
+	 use my_first_db
+
+2)Create students collection.
+	db.createCollection("student")
+
+3)Create 5 students with the appropriate info.
+	> db.students.insert({name:'karmel',home_state:'palestine',lucky_number:6,birthday:{month:6,day:9,year:1996}})
+		WriteResult({ "nInserted" : 1 })
+	> db.students.insert({name:'mahmoud',home_state:'palestine',lucky_number:33,birthday:{month:6,day:3,year:1991}})
+		WriteResult({ "nInserted" : 1 })
+	> db.students.insert({name:'tasneem',home_state:'palestine',lucky_number:5,birthday:{month:25,day:2,year:1994}})
+		WriteResult({ "nInserted" : 1 })
+	> db.students.insert({name:'reem',home_state:'palestine',lucky_number:2,birthday:{month:25,day:10,year:1998}})
+		WriteResult({ "nInserted" : 1 })
+	> db.students.insert({name:'yousef',home_state:'palestine',lucky_number:2,birthday:{month:23,day:10,year:1993}})
+		WriteResult({ "nInserted" : 1 })
+4)Get all students.
+	> db.students.find().pretty()
+5)Retrieve all students who are from palestine
+	> db.students.find({"home_state":"palestine"})
+		{ "_id" : ObjectId("6101143b6895bd308f874687"), "name" : "karmel", "home_state" : "palestine", "lucky_number" : 6, "birthday" : { "month" : 6, "day" : 9, "year" : 1996 } }
+		{ "_id" : ObjectId("610114816895bd308f874688"), "name" : "mahmoud", "home_state" : "palestine", "lucky_number" : 33, "birthday" : { "month" : 6, "day" : 3, "year" : 1991 } }
+		{ "_id" : ObjectId("610114b86895bd308f874689"), "name" : "tasneem", "home_state" : "palestine", "lucky_number" : 5, "birthday" : { "month" : 25, "day" : 2, "year" : 1994 } }
+		{ "_id" : ObjectId("610115116895bd308f87468a"), "name" : "reem", "home_state" : "palestine", "lucky_number" : 2, "birthday" : { "month" : 25, "day" : 10, "year" : 1998 } }
+		{ "_id" : ObjectId("6101153a6895bd308f87468b"), "name" : "yousef", "home_state" : "palestine", "lucky_number" : 2, "birthday" : { "month" : 23, "day" : 10, "year" : 1993 } }
+
+6)Get all students whose lucky number is greater than 3
+	> db.students.find({"lucky_number":{$gt:3}})
+		{ "_id" : ObjectId("6101143b6895bd308f874687"), "name" : "karmel", "home_state" : "palestine", "lucky_number" : 6, "birthday" : { "month" : 6, "day" : 9, "year" : 1996 } }
+		{ "_id" : ObjectId("610114816895bd308f874688"), "name" : "mahmoud", "home_state" : "palestine", "lucky_number" : 33, "birthday" : { "month" : 6, "day" : 3, "year" : 1991 } }
+		{ "_id" : ObjectId("610114b86895bd308f874689"), "name" : "tasneem", "home_state" : "palestine", "lucky_number" : 5, "birthday" : { "month" : 25, "day" : 2, "year" : 1994 } }
+
+7)Get all students whose lucky number is less than or equal to 10
+	> db.students.find({"lucky_number":{$gte:10}})
+		{ "_id" : ObjectId("610114816895bd308f874688"), "name" : "mahmoud", "home_state" : "palestine", "lucky_number" : 33, "birthday" : { "month" : 6, "day" : 3, "year" : 1991 } }
+
+8)Get all students whose lucky number is between 1 and 9 (inclusive)
+	> db.students.find({$and:[{"lucky_number":{$gte:1}},{"lucky_number":{$lte:10}}]})
+	{ "_id" : ObjectId("6101143b6895bd308f874687"), "name" : "karmel", "home_state" : "palestine", "lucky_number" : 6, "birthday" : { "month" : 6, "day" : 9, "year" : 1996 } }
+	{ "_id" : ObjectId("610114b86895bd308f874689"), "name" : "tasneem", "home_state" : "palestine", "lucky_number" : 5, "birthday" : { "month" : 25, "day" : 2, "year" : 1994 } }
+	{ "_id" : ObjectId("610115116895bd308f87468a"), "name" : "reem", "home_state" : "palestine", "lucky_number" : 2, "birthday" : { "month" : 25, "day" : 10, "year" : 1998 } }
+	{ "_id" : ObjectId("6101153a6895bd308f87468b"), "name" : "yousef", "home_state" : "palestine", "lucky_number" : 2, "birthday" : { "month" : 23, "day" : 10, "year" : 1993 } }
+
+9)Add a field to each student collection called 'interests' that is an ARRAY. It should contain the following entries: 'coding', 'brunch', 'MongoDB'. Do this in ONE operation.
+	> db.students.update({},{$set:{"intrests":['coding', 'brunch', 'MongoDB']}},{multi:true})
+		WriteResult({ "nMatched" : 5, "nUpserted" : 0, "nModified" : 5 })
+
+10)Add some unique interests for each particular student into each of their interest arrays.
+	> db.students.update({name:'karmel'},{$push:{interests:'hanging-out'}})
+		WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+	> db.students.update({name:'mahmoud'},{$push:{interests:'teaching-people'}})
+		WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+11)Add the interest 'taxes' into someone's interest array.
+	> db.students.update({name:'tasneem'},{$push:{interests:'taxes'}})
+		WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+12)Remove the 'taxes' interest you just added
+
+	> db.students.update({name:'tasneem'},{$pop:{interests:(1)}})
+		WriteResult({ "nMatched" : 0, "nUpserted" : 0, "nModified" : 0 })
+13)Remove all students who are from California.
+	> db.students.remove({home_state:'calefornia'})
+		WriteResult({ "nRemoved" : 1 })
+
+14)Remove a student by name.
+	> db.students.remove({name:'reem'},true)
+		WriteResult({ "nRemoved" : 1 })
+
+15)Add a field to each student collection called 'number_of_belts' and set it to 0
+	> db.students.update({},{$set:{"number_of_belts":0}},{multi:true})
+		WriteResult({ "nMatched" : 3, "nUpserted" : 0, "nModified" : 3 })
+
+16)Increment this field by 1 for all students in Washington (Seattle Dojo)
+
+	> db.students.update({},{$inc:{"number_of_belts":1}},{multi:true})
+		WriteResult({ "nMatched" : 3, "nUpserted" : 0, "nModified" : 3 })
+
+17)Rename the 'number_of_belts' field to 'belts_earned'
+	> db.students.update({},{$rename:{'number_of_belts':'belts_earned'}},{multi:true})
+		WriteResult({ "nMatched" : 3, "nUpserted" : 0, "nModified" : 3 })
+
+18)Remove the 'lucky_number' field.
+	> db.students.update({},{$unset:{"lucky_number":""}},{multi:true})
+		WriteResult({ "nMatched" : 3, "nUpserted" : 0, "nModified" : 3 })
+
+19)Add a 'updated_on' field, and set the value as the current date.
+	> db.students.update({},{$set:{"updated_on":new Date()}},{multi:true})
+		WriteResult({ "nMatched" : 3, "nUpserted" : 0, "nModified" : 3 })
+
