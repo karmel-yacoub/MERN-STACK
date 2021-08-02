@@ -20,6 +20,9 @@ module.exports.findAllPrpduct = (request,response)=>{
     .then(products => response.json(products))
     .catch(err => response.json(err))
  
-
 }
-  
+ module.exports.findOneSingleProduct = (req, res)=> {
+    product.findOne({_id: req.params.id})
+    .then(oneSingleProduct => res.json(oneSingleProduct))
+    .catch(err => res.json({message: "something went wrong", error: err}));
+ } 
