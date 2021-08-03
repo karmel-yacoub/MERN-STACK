@@ -33,7 +33,7 @@ export default () => {
                 <input type="number" onChange={(e)=>setPrice(e.target.value)} value={price}/>
             </p>
             <p>
-                <label>Description</label>
+                <label>Description</label><br />
                 <input type="text" onChange={(e)=> setDescription(e.target.value)} value={description}></input>
             </p>
             <button type='submit'>click</button>

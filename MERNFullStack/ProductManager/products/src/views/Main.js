@@ -30,10 +30,15 @@ const Main = () => {
             .then(res=>setProduct(res.data))
             .catch(err=>console.log("Error: ", err))
         },[])
+    const removeFromDom = productId => {
+        setProduct(product.filter(product => product._id !== productId));
+        }
     return (
         <div>
             <Form/>
-            <ProductList product={product}/>
+            {/* <ProductList product={product}/> */}
+            <hr/>
+           {<ProductList product={product} removeFromDom={removeFromDom}/>}
         </div>
     )
 }

@@ -26,3 +26,13 @@ module.exports.findAllPrpduct = (request,response)=>{
     .then(oneSingleProduct => res.json(oneSingleProduct))
     .catch(err => res.json({message: "something went wrong", error: err}));
  } 
+module.exports.ubdateProduct =(req, res)=> {
+    product.findOneAndUpdate({_id: req.params.id}, req.body, {new:true})
+        .then(updatedProduct=> res.json(updatedProduct))
+        .catch(err => res.json(err))
+}
+module.exports.deleteProduct =(req, res) =>{
+    product.deleteOne({ _id: req.params.id })
+    .then(deleteConfirmation => res.json(deleteConfirmation))
+    .catch(err => res.json(err))
+}
