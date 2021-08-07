@@ -1,24 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-export default () => {
+export default props =>  {
     //keep track of what is being typed via useState hook
-    const [title, setTitle] = useState(""); 
-    const [price, setPrice] = useState("");
-    const[description, setDescription] = useState("");
+    const{initialTitle, initialPrice, initialDescription, onSubmitProp} =props;
+    const [title, setTitle] = useState(initialTitle); 
+    const [price, setPrice] = useState(initialPrice);
+    const[description, setDescription] = useState(initialDescription);
     //handler when the form is submitted
     const onSubmitHandler = e => {
         //prevent default behavior of the submit
         e.preventDefault();
         //make a post request to create a new person
-        axios.post('http://localhost:8000/api/product', {
-            title,
-            price,
-            description,
+        // axios.post('http://localhost:8000/api/product', {
+        //     title,
+        //     price,
+        //     description,
+        onSubmitProp({title, price,description });
+        }
+            // .then(res=>console.log(res))
+            // .catch(err=>console.log(err))
 
-        })
-            .then(res=>console.log(res))
-            .catch(err=>console.log(err))
-    }
     //onChange to update firstName and lastName
     return (
         <>
@@ -40,4 +41,4 @@ export default () => {
         </form>
         </>
     )
-}
+    }
